@@ -1,0 +1,7 @@
+{
+    "/api/crsService/*":{
+        "target":"http://localhost:3000",
+        "secure": false,
+        "pathRewrite": {"^/api/crsService": "/api"}
+    }
+}

@@ -9,17 +9,24 @@
 }
 
 h1 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 30px;
-    margin-left: 475px;
-    color: chocolate;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 30px;
+  text-align: center;
+  color: chocolate;
+}
+
+.error-container {
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  color: red;
 }
 
 h2 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 25px;
-    margin-left: 625px;
-    color: chocolate;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 25px;
+  text-align: center;
+  color: chocolate;
 }
 
 .mat-card {
@@ -29,7 +36,7 @@ h2 {
   margin-right: auto;
   margin-top: 60px;
 }
-.login-button button{
+.login-button button {
   width: 75%;
   margin-left: 12.5%;
 }
