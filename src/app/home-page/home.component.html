@@ -1,117 +1,93 @@
-<!-- Page Preloder -->
-<div id="preloder">
-  <div class="loader"></div>
-</div>
-
-<!-- Top right elements -->
-<div class="spacial-controls">
-  <div class="search-switch"><img src="img/search-icon.png" alt="" /></div>
-  <div class="nav-switch-warp">
-    <div class="nav-switch">
-      <div class="ns-bar"></div>
-    </div>
-  </div>
-</div>
-<!-- Top right elements end -->
-
-<div class="main-warp">
-  <!-- header section -->
-  <header class="header-section">
-    <div class="header-close">
-      <i class="fa fa-times"></i>
-    </div>
-    <div class="header-warp">
-      <a href="" class="site-logo">
-        <img src="./img/logo.png" alt="" />
-      </a>
-      <img src="img/menu-icon.png" alt="" class="menu-icon" />
-      <ul class="main-menu">
-        <li><a href="./home.html">Home</a></li>
-        <li><a href="./gallery.html">Gallery</a></li>
-        <li><a href="./gallery-single.html">Single gallery</a></li>
-        <li class="active"><a href="./blog.html">Blog</a></li>
-        <li><a href="./contact.html">Contact</a></li>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <h2 class="navbar-brand">Course Recomendation System</h2>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarResponsive"
+      aria-controls="navbarResponsive"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:" (click)="this.crsService.logOut()">Logout</a>
+        </li>
       </ul>
-      <div class="social-links-warp">
-        <div class="social-links">
-          <a href=""><i class="fa fa-behance"></i></a>
-          <a href=""><i class="fa fa-dribbble"></i></a>
-          <a href=""><i class="fa fa-twitter"></i></a>
-          <a href=""><i class="fa fa-facebook"></i></a>
-          <a href=""><i class="fa fa-pinterest"></i></a>
-        </div>
-        <div class="social-text">Find us on</div>
-      </div>
-    </div>
-    <div class="copyright">Colorlib 2018 @ All rights reserved</div>
-  </header>
-  <!-- header section end -->
-
-  <!-- Page section -->
-  <div class="page-section blog-page">
-    <div class="blog-warp">
-      <div class="blog-track">
-        <div class="blog-post">
-          <div class="blog-thumb set-bg" data-setbg="img/blog/1.jpg">
-            <div class="post-date">
-              <h3>10</h3>
-              <span>Dec, ‘18</span>
-            </div>
-          </div>
-          <h2 class="post-title">The best tips & tricks</h2>
-          <div class="post-metas">
-            <div class="post-meta">By Michael Smith</div>
-            |
-            <div class="post-meta">In photography</div>
-          </div>
-          <p>
-            Ut pellentesque auctor lorem, at maximus lacus faucibus nec.
-            Interdum et malesuada fames ac ante ipsum primis in faucibus. Mauris
-            auctor nunc non nulla euismod consequat. Pellentesque non mattis
-            nulla. Fusce quis tempor risus, non elemen tum dui. Curabitur et
-            mattis ex, a ultrices. Ut pellentesque auctor lorem, at maximus
-            lacus faucibus nec. Interdum et malesuada fames ac ante ipsum primis
-            in faucibus.
-          </p>
-        </div>
-        <div class="blog-post">
-          <div class="blog-thumb set-bg" data-setbg="img/blog/2.jpg">
-            <div class="post-date">
-              <h3>10</h3>
-              <span>Dec, ‘18</span>
-            </div>
-          </div>
-          <h2 class="post-title">The best tips & tricks</h2>
-          <div class="post-metas">
-            <div class="post-meta">By Michael Smith</div>
-            |
-            <div class="post-meta">In photography</div>
-          </div>
-          <p>
-            Ut pellentesque auctor lorem, at maximus lacus faucibus nec.
-            Interdum et malesuada fames ac ante ipsum primis in faucibus. Mauris
-            auctor nunc non nulla euismod consequat. Pellentesque non mattis
-            nulla. Fusce quis tempor risus, non elemen tum dui. Curabitur et
-            mattis ex, a ultrices. Ut pellentesque auctor lorem, at maximus
-            lacus faucibus nec. Interdum et malesuada fames ac ante ipsum primis
-            in faucibus.
-          </p>
-        </div>
-      </div>
     </div>
   </div>
-  <!-- Page section end-->
-</div>
+</nav>
 
-<!-- Search model -->
-<div class="search-model">
-  <div class="h-100 d-flex align-items-center justify-content-center">
-    <div class="search-close-switch">x</div>
-    <form class="search-moderl-form">
-      <input type="text" id="search-input" placeholder="Search here....." />
-    </form>
+<!-- Page Content -->
+<div class="container">
+  <br />
+  <br />
+  <br />
+  <div class="row">
+    <div class="col-md-3">
+      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Student Details</a>
+        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false"
+          >Get Recommendations</a
+        >
+        <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"
+          >Other Available Courses</a
+        >
+        <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false"
+          >Courses Completed</a
+        >
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+          <!-- Displaying User Details-->
+          <div class="user-details-container" *ngIf="crsService.userdetails">
+            <label class="col-md-6">Student ID :</label>
+            <label class="col-md-6"> {{ crsService.userdetails.sId }} </label>
+
+            <label class="col-md-6">Student Name : </label>
+            <label class="col-md-6"> {{ crsService.userdetails.sFname }} {{ crsService.userdetails.sLname }} </label>
+
+            <label class="col-md-6">Phone : </label>
+            <label class="col-md-6"> {{ crsService.userdetails.sPhone }} </label>
+
+            <label class="col-md-6">Email : </label>
+            <label class="col-md-6"> {{ crsService.userdetails.sEmail }} </label>
+
+            <label class="col-md-6">College : </label>
+            <label class="col-md-6"> {{ crsService.userdetails.sCollege }} </label>
+
+            <label class="col-md-6">Degree : </label>
+            <label class="col-md-6"> {{ crsService.userdetails.sDegree }} </label>
+
+            <label class="col-md-6">Branch : </label>
+            <label class="col-md-6"> {{ crsService.userdetails.sBranch }} </label>
+
+            <label class="col-md-6">Status : </label>
+            <label class="col-md-6"> {{ crsService.userdetails.sStatus }} </label>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+          jsdgf sjhgjhg kjhgj hg jkhgk jhg kjh gkjh g kjh gjh g jh
+        </div>
+        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+          jk gjhg jhgjhgjh g jhg jhg jh gjh gkj
+          <h1>hg jhg jhg jgg jkhghg jhgjhgjhhfj</h1>
+        </div>
+        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+          yt r fhg f hgf kjg kjt uyg g jhg kf ku jhhg *ngFor="let fgh of fhg; trackBy:fgh.id"
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar Widgets Column -->
   </div>
+  <!-- /.row -->
 </div>
-<!-- Search model end -->
-
-<!--====== Javascripts & Jquery ======-->
+<!-- /.container -->

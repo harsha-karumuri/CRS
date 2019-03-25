@@ -1,0 +1,179 @@
+<div ngForm #f="ngForm">
+  <!-- [nestedForm]="f" -->
+  <!--Edited 3 places to take out errors-->
+  <p class="tight pull-left" *ngIf="showTableFilterText"><span [innerHTML]="tableFilterTextCopy"></span></p>
+  <p class="small tight pull-right" *ngIf="showTableFilterText">
+    <span class="glyphicon glyphicon-filter"></span> Filter the content within the table by completing the fields below the corresponding column header.
+  </p>
+  <table class="table table-responsive table-bordered table-condensed table-striped" style="margin-bottom: 0;">
+    <thead>
+      <tr>
+        <th *ngIf="this.tableShowCheckBoxes">
+          <label class="sr-only" for="tasks-select-all">Select All</label>
+
+          <input type="checkbox" id="tasks-select-all" [checked]="datastore.selectedRows.length === datastore.filteredRows.length" (click)="allCheckBoxSelected()" />
+        </th>
+        <th *ngIf="this.tableShowRowNumber">#</th>
+        <th *ngFor="let header of this.tableHeaders" [ngClass]="{ hidden: header.hidden }">
+          {{ header.name }}
+          <input
+            type="text"
+            class="form-control"
+            style="padding: 0 3px;"
+            placeholder="Filter by {{ header.name }}"
+            (keyup)="onFilter($event.target.value, header)"
+            *ngIf="header.filterType === 'textbox'"
+          />
+          <select class="form-control" style="padding: 0 3px;" (change)="onFilter($event.target.value, header)" *ngIf="header.filterType === 'dropdown'">
+            <option value="">Select</option>
+            <option *ngFor="let type of datastore.filterArray[header.name]" value="{{ type }}">{{ type }}</option>
+          </select>
+        </th>
+        <th *ngIf="this.tableShowDelete">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="!datastore.filteredRows || datastore.filteredRows.length === 0">
+        <td [colSpan]="colSpan()"><b>No records found.</b></td>
+      </tr>
+      <ng-template ngFor let-application [ngForOf]="datastore.filteredRows" let-i="index">
+        <tr>
+          <td *ngIf="this.tableShowCheckBoxes">
+            <label for="select-1" class="sr-only">Select Row</label>
+            <input [id]="'checkbx-' + i" type="checkbox" [checked]="datastore.selectedRows.indexOf(application) >= 0" (click)="checkBoxSelected(application)" />
+          </td>
+          <td *ngIf="this.tableShowRowNumber">{{ i + 1 }}</td>
+          <td *ngFor="let key of this.tableHeaders; let j = index" [ngClass]="{ hidden: key.hidden }">
+            <div *ngIf="tableIsEditable" [ngSwitch]="key.bodyInputType">
+              <div *ngSwitchCase="'dropdown'">
+                <select class="form-control" name="{{ key.bodyPropName }}{{ i }}{{ j }}" [(ngModel)]="application[key.bodyPropName]">
+                  <option value="">None</option>
+                  <option *ngFor="let type of getContentDropdownArray(key.dependentFields, i, key.bodyPropName)" [ngValue]="getValueOfTableContent(type, key.dependentFields)">
+                    {{ getValueOfTableContent(type, key.dependentFields) }}
+                  </option>
+                </select>
+              </div>
+              <div *ngSwitchCase="'select'">
+                <select class="form-control" name="{{ key.bodyPropName }}{{ i }}{{ j }}" [(ngModel)]="application[key.bodyPropName]">
+                  <option value="">None</option>
+                  <option *ngFor="let type of key.selectFields" [ngValue]="type"> {{ type }} </option>
+                </select>
+              </div>
+              <div *ngSwitchDefault>
+                <input
+                  type="text"
+                  name="{{ key.bodyPropName }}{{ i }}{{ j }}"
+                  #{{key.bodyPropName}}{{i}}{{j}}="ngModel"
+                  [pattern]="key.pattern"
+                  [attr.maxLength]="key.maxLength"
+                  id="{{ key.bodyPropName }}{{ i }}{{ j }}"
+                  style="width: 100%; border-radius: 4px;border: 1px solid #ccc;padding: 0 3px;height: 34px;"
+                  [(ngModel)]="application[key.bodyPropName]"
+                  [required]="checkRequired(key, application)"
+                />
+              </div>
+            </div>
+
+            <!-- <div *ngIf="tableIsEditable && key.bodyInputType==='dropdown'">
+              <select class="form-control" name="{{key.bodyPropName}}{{i}}{{j}}" [(ngModel)]="application[key.bodyPropName]">
+                <option value="">None</option>
+                <option *ngFor="let type of getContentDropdownArray(key.dependentFields, i, key.bodyPropName)"
+                  [ngValue]="getValueOfTableContent(type, key.dependentFields)">
+                  {{getValueOfTableContent(type, key.dependentFields)}}
+                </option>
+              </select>
+            </div> -->
+            <div *ngIf="!tableIsEditable">
+              <span *ngIf="key?.contentType === '' || key?.contentType === null">
+                {{ application[key.bodyPropName] }}
+              </span>
+              <!-- To be updated in case of a upload-file date fix -->
+              <span *ngIf="key?.contentType === 'date' && application[key.bodyPropName]">
+                <!-- Here-->
+                <!--{{ application[key.bodyPropName] | showDate }}-->
+              </span>
+              <span *ngIf="key?.contentType === 'dateWithNoOffset' && application[key.bodyPropName]">
+                <!-- Here-->
+                <!--{{ application[key.bodyPropName] | showDate }}-->
+              </span>
+              <span *ngIf="key?.contentType === 'downloadLink'">
+                <a href="javascript:;" (click)="downloadFile(application)">
+                  <span class="pdf"> {{ application[key.bodyPropName] }} </span>
+                </a>
+              </span>
+              <span *ngIf="key?.contentType === 'icon'">
+                <a *ngIf="application['status'] === 'Approved'" href="javascript:;" (click)="invokeParent(application)" [ngClass]="key['iconClass']"> </a>
+              </span>
+            </div>
+          </td>
+          <td *ngIf="this.tableShowDelete">
+            <a (click)="deleteSelectedRow(i)"> <span class="glyphicon glyphicon-remove-sign"></span> </a>
+          </td>
+        </tr>
+        <tr *ngIf="tableIsEditable && rowValidation(this.tableHeaders, i, f)">
+          <td *ngIf="this.tableShowCheckBoxes"></td>
+          <td *ngIf="this.tableShowRowNumber"></td>
+          <td *ngFor="let key of this.tableHeaders; let j = index">
+            <div class="help-block with-errors" aria-live="assertive" *ngIf="checkValidation(key.bodyPropName + i + j, f, key.warning)">
+              <ul class="list-unstyled">
+                <li role="alert" aria-live="assertive">{{ key.name }} is not valid</li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </tbody>
+  </table>
+
+  <!-- <div style="text-align: right; display: block; width: 100%;">
+  <ul *ngIf="datastore.pager.pages && datastore.pager.pages.length" class="pagination" style="display: block; float: right; margin-top: 0;">
+    <li [ngClass]="{disabled:datastore.pager.currentPage === 1}">
+      <a (click)="isFilteredTasks? filterDataFromDb(1) : setPage(1)">First</a>
+    </li>
+    <li *ngIf="datastore.pager.currentPage !== 1" [ngClass]="{disabled:datastore.pager.currentPage === 1}">
+      <a>Previous</a>
+    </li>
+    <li *ngFor="let page of datastore.pager.pages" [ngClass]="{active:datastore.pager.currentPage === page}">
+      <a>{{page}}</a>
+    </li>
+    <li *ngIf="datastore.pager.currentPage !== datastore.pager.totalPages" [ngClass]="{disabled:datastore.pager.currentPage === datastore.pager.totalPages}">
+      <a>Next</a>
+    </li>
+    <li [ngClass]="{disabled:datastore.pager.currentPage === datastore.pager.totalPages}">
+      <a>Last</a>
+    </li>
+  </ul>
+</div> -->
+  <div *ngIf="tableIsEditable">
+    <div class="hidden-print">
+      <label for="addRowsToTable" style=" background-color: #ddd;border: 1px"
+        >Add
+        <input type="text" id="addRowsToTable" name="addRows" [(ngModel)]="datastore.addRowsCount" style="border-radius: 10px;border: 1px solid #ccc;" ngModel placeholder="#" />
+        number of rows <button type="button" [disabled]="datastore.addRowsCount ? false : true" (click)="addRows()" class="btn btn-primary">Add</button></label
+      >
+    </div>
+    <div *ngIf="this.datastore.rawData.length > 0 && !tableShowDelete">
+      <label for="deleteRowsFromTable" style="background-color: #ddd;;border: 1px"
+        >Delete
+        <input
+          type="text"
+          id="deleteRowsFromTable"
+          name="deleteRows"
+          [(ngModel)]="datastore.delteRowsCount"
+          style="border-radius: 10px;border: 1px solid #ccc;"
+          ngModel
+          placeholder="#"
+        />
+        number of rows
+        <button
+          type="button"
+          [disabled]="datastore.delteRowsCount && datastore.delteRowsCount <= datastore.rawData.length ? false : true"
+          (click)="deleteRows()"
+          class="btn btn-primary"
+        >
+          Delete
+        </button></label
+      >
+    </div>
+  </div>
+</div>
